@@ -1,0 +1,22 @@
+General
+------
+
+This is a module for ITK: The Insight Toolkit for Segmentation and
+Registration. It is designed to work with the ITKv4 modular system and
+be places it ITK/Modules/External.
+
+This modular is empty it is just a template to be used as a starting
+point for a module with acutal content.
+
+
+License
+-------
+
+This software is distributed under the Apache License. Please see
+LICENSE for details. 
+
+
+Author
+------
+
+Bradley Lowekamp
