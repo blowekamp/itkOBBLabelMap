@@ -9,7 +9,7 @@ file( READ "${MY_CURENT_DIR}/README" DOCUMENTATION )
 # The testing module in ITKExternalTemplate depends on ITKTestKernel
 # and ITKMetaIO(besides ITKExternalTemplate and ITKCore)
  
-
+# define the dependencies of the include module and the tests
 itk_module(ITKExternalTemplate
   DEPENDS
     ITKCommon
