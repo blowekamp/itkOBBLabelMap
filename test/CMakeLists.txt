@@ -4,10 +4,10 @@ itk_module_test()
 #changed when this module is renamed.
 
 set(ITK${itk-module}Tests
-  itkExternalTemplateTest.cxx
+  itkEmptyTest.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${${itk-module}Tests}")
 
-itk_add_test(NAME itkExternalTemplateTest
-  COMMAND ${itk-module}TestDriver itkExternalTemplateTest)
+itk_add_test(NAME itkDeleteMeEmptyTest
+  COMMAND ${itk-module}TestDriver itkEmptyTest "argument1" "..." )
