@@ -7,7 +7,7 @@ set(ITK${itk-module}Tests
   itkEmptyTest.cxx
 )
 
-CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${${itk-module}Tests}")
+CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
 
 itk_add_test(NAME itkDeleteMeEmptyTest
   COMMAND ${itk-module}TestDriver itkEmptyTest "argument1" "..." )
