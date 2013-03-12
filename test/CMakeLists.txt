@@ -11,3 +11,7 @@ CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-mo
 
 itk_add_test(NAME itkDeleteMeEmptyTest
   COMMAND ${itk-module}TestDriver itkEmptyTest "argument1" "..." )
+
+add_executable(itkOBBLabelMapExample OBB.cxx )
+
+target_link_libraries(itkOBBLabelMapExample ${${itk-module}-Test_LIBRARIES} )
