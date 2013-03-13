@@ -1,2 +1,2 @@
-project(ITKExternalTemplate)
+project(ITKOBBLabelMap)
 itk_module_impl()
