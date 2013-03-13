@@ -1,7 +1,9 @@
 #include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
 #include "itkImage.h"
 #include "itkLabelImageToShapeLabelMapFilter.h"
 #include "itkStatisticsLabelObject.h"
+#include "itkResampleImageFilter.h"
 #include <iostream>
 #include <string>
 
@@ -12,53 +14,60 @@ int main( int argc, char *argv[] )
 
   RegisterRequiredFactories();
 
-  if (argc < 4)
+  if (argc < 5)
     {
-    std::cerr << "Not enough arguments." << std::endl;
+    std::cerr << "Usage: " << argv[0] << "imageFileName labelImageFileName outputImageFileName labelID" << std::endl;
     return 0;
     }
 
   std::string imageFileName = argv[1];
   std::string labelImageFileName = argv[2];
-  itk::SizeValueType label = atoi(argv[3]);
+  std::string outputImageFileName = argv[3];
+  itk::SizeValueType label = atoi(argv[4]);
 
   const unsigned int ImageDimension = 3;
-  typedef uint32_t PixelType;
-  typedef itk::Image<PixelType, ImageDimension> ImageType;
+  typedef uint32_t LabelPixelType;
+  typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
 
+  typedef itk::Image<float, ImageDimension> ImageType;
 
-  typedef itk::ImageFileReader<ImageType> ImageReaderType;
+  LabelImageType::Pointer labelImage;
+  {
+  typedef itk::ImageFileReader<LabelImageType> ImageReaderType;
   ImageReaderType::Pointer reader = ImageReaderType::New();
   reader->SetFileName( labelImageFileName );
+
+
+  std::cout << "Reading labelImage..." << std::endl;
   reader->UpdateLargestPossibleRegion();
+  labelImage = reader->GetOutput();
+  }
 
 
-  ImageType::Pointer image = reader->GetOutput();
-
-  typedef itk::StatisticsLabelObject<PixelType, ImageType::ImageDimension> LabelObjectType;
+  typedef itk::StatisticsLabelObject<LabelPixelType, ImageDimension> LabelObjectType;
 
   typedef itk::LabelMap<LabelObjectType> LabelMapType;
-  typedef itk::LabelImageToShapeLabelMapFilter<ImageType, LabelMapType> ShapeLabelMapFilter;
+  typedef itk::LabelImageToShapeLabelMapFilter<LabelImageType, LabelMapType> ShapeLabelMapFilter;
 
   typedef vnl_matrix<double> MatrixType;
   typedef vnl_vector<double> VectorType;
 
 
   ShapeLabelMapFilter::Pointer stats = ShapeLabelMapFilter::New();
-  stats->SetInput(image);
+  stats->SetInput(labelImage);
   stats->ComputePerimeterOn();
+  std::cout << "Computing shape labels..." << std::endl;
   stats->UpdateLargestPossibleRegion();
+
+
   LabelMapType::Pointer labelCollection = stats->GetOutput();
   LabelObjectType *labelObject = labelCollection->GetLabelObject(label);
 
+
+  std::cout << "Computing label OBB..." << std::endl;
   const MatrixType rotationMatrix = labelObject->GetPrincipalAxes().GetVnlMatrix();
   const LabelObjectType::CentroidType centroid = labelObject->GetCentroid();
   const unsigned int numLines = labelObject->GetNumberOfLines();
-
-
-  std::cout << "using label object: ";
-  labelObject->Print(std::cout);
-  std::cout << std::endl;
 
   // Create a matrix where the columns are the physical points of the
   // start and end of each RLE line from the label map, relative to
@@ -69,9 +78,9 @@ int main( int argc, char *argv[] )
     LabelObjectType::LineType line = labelObject->GetLine(l);
 
     // add start index of line as physical point
-    ImageType::IndexType idx = line.GetIndex();
-    ImageType::PointType pt;
-    image->TransformIndexToPhysicalPoint(idx, pt);
+    LabelImageType::IndexType idx = line.GetIndex();
+    LabelImageType::PointType pt;
+    labelImage->TransformIndexToPhysicalPoint(idx, pt);
     for(unsigned int j = 0; j < ImageDimension; ++j)
       {
       pixelLocations(j,l*2) = pt[j] - centroid[j];
@@ -79,7 +88,7 @@ int main( int argc, char *argv[] )
 
     // add end index of line as physical point
     idx[0] +=  line.GetLength()-1;
-    image->TransformIndexToPhysicalPoint(idx, pt);
+    labelImage->TransformIndexToPhysicalPoint(idx, pt);
     for(unsigned int j = 0; j < ImageDimension; ++j)
       {
       pixelLocations(j,l*2+1) = pt[j] - centroid[j];
@@ -91,15 +100,9 @@ int main( int argc, char *argv[] )
   MatrixType transformedPixelLocations = rotationMatrix * pixelLocations;
 
   // find the bounds in the projected domain
-  VectorType proj_min(ImageDimension, 0);
-  VectorType proj_max(ImageDimension, 0);
-
-  for ( unsigned int i = 0; i < ImageDimension; ++i )
-    {
-    const double value = transformedPixelLocations(i, 0);
-    proj_min[i] = value;
-    proj_max[i] = value;
-    }
+  assert( transformedPixelLocations.columns() != 0 );
+  VectorType proj_min = transformedPixelLocations.get_column(0);
+  VectorType proj_max = transformedPixelLocations.get_column(0);
 
   for ( unsigned int column = 1; column < transformedPixelLocations.columns(); column++ )
     {
@@ -111,17 +114,19 @@ int main( int argc, char *argv[] )
       }
     }
 
+  std::cout << "proj_min w/o offset: " << proj_min << std::endl;
+  std::cout << "proj_max w/o offset: " << proj_max << std::endl;
+
   // the center of the input voxel should the origin?
   VectorType proj_origin = proj_min;
 
-
-  const itk::Vector<double, ImageDimension> gridOffset = 0.5*image->GetSpacing();
+  // The proj_min/max is from center of pixel to center of pixel. The
+  // full extent of the pixels needs to include the offset bits to the
+  // corners, projected onto the principle axis basis (rotationMatrix).
+  const itk::Vector<double, ImageDimension> gridOffset = 0.5*labelImage->GetSpacing();
   itk::Vector<double, ImageDimension> physicalOffset;
-  image->TransformLocalVectorToPhysicalVector(gridOffset, physicalOffset);
+  labelImage->TransformLocalVectorToPhysicalVector(gridOffset, physicalOffset);
   VectorType proj_offset = rotationMatrix * physicalOffset.GetVnlVector();
-
-  std::cout << "proj_min w/o offset: " << proj_min << std::endl;
-  std::cout << "proj_max w/o offset: " << proj_max << std::endl;
 
   for ( unsigned int i = 0; i < ImageDimension; ++i )
     {
@@ -130,27 +135,64 @@ int main( int argc, char *argv[] )
     }
 
 
-  VectorType origin =  rotationMatrix.transpose() *  proj_origin; // offset
-                                                                  // by spacing....
+  LabelImageType::PointType outOrigin((rotationMatrix.transpose()*proj_origin).data_block()); // offset by spacing....
+
   for ( unsigned int i = 0; i < ImageDimension; ++i )
     {
-    origin[i] += centroid[i];
+    outOrigin[i] += centroid[i];
     }
 
-  ImageType::SizeType size;
+  itk::Vector<double, ImageDimension> rsize; // real physical size
   for ( unsigned int i = 0; i < ImageDimension; ++i )
     {
-    size[i] = vnl_math_abs(proj_max[i]-proj_min[i]);
+    rsize[i] = vnl_math_abs(proj_max[i]-proj_min[i]);
     }
 
   std::cout << "proj_min: " << proj_min << std::endl;
   std::cout << "proj_max: " << proj_max << std::endl;
-  std::cout << "origin: " << origin << std::endl;
-  std::cout << "size: " << size << std::endl;
+  std::cout << "origin: " << outOrigin << std::endl;
+  std::cout << "size: " << rsize << std::endl;
 
 
-  ImageType::DirectionType direction( rotationMatrix.transpose() );
-  std::cout << "direction: " << direction;
+  LabelImageType::DirectionType outDirection( rotationMatrix.transpose() );
+  std::cout << "outDirection: " << outDirection;
+
+
+  LabelImageType::SpacingType outSpacing;
+  outSpacing.Fill(10.0);
+
+  LabelImageType::SizeType outSize;
+  for ( unsigned int i = 0; i < ImageDimension; ++i )
+    {
+    outSize[i] = itk::Math::Floor<itk::SizeValueType>( rsize[i]/ outSpacing[i] );
+    }
+
+
+  typedef itk::ImageFileReader<ImageType> ImageReaderType;
+  ImageReaderType::Pointer reader = ImageReaderType::New();
+  reader->SetFileName( imageFileName );
+  reader->UpdateLargestPossibleRegion();
+  ImageType::Pointer image = reader->GetOutput();
+
+  std::cout << "Read Real image..." << std::endl;
+
+  typedef itk::ResampleImageFilter<ImageType, ImageType> ResampleFilter;
+  ResampleFilter::Pointer resampler = ResampleFilter::New();
+
+  resampler->SetOutputDirection(outDirection);
+  resampler->SetOutputOrigin(outOrigin);
+  resampler->SetOutputSpacing(outSpacing);
+  resampler->SetSize(outSize);
+
+  resampler->SetInput(image);
+
+  resampler->UpdateLargestPossibleRegion();
+
+  typedef itk::ImageFileWriter<ImageType> WriterType;
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetFileName(outputImageFileName);
+  writer->SetInput(resampler->GetOutput());
+  writer->Update();
 
   return 0;
 }
