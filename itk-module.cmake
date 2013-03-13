@@ -13,6 +13,7 @@ file( READ "${MY_CURENT_DIR}/README" DOCUMENTATION )
 itk_module(ITKOBBLabelMap
   DEPENDS
     ITKCommon
+    ITKLabelMap
   TEST_DEPENDS
     ITKTestKernel
     ITKMetaIO
