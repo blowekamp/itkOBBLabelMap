@@ -19,11 +19,12 @@
 #define __itkOrientedBoundingBoxLabelObject_h
 
 #include "itkLabelMap.h"
+#include "itkShapeLabelObject.h"
 
 namespace itk
 {
 
-template< class TLabel, unsigned int VImageDimension > class ShapeLabelObject;
+//template< class TLabel, unsigned int VImageDimension > class ShapeLabelObject;
 
 /** \class OrientedBoundingBoxLabelObject
  *  \brief A LabelObject with a generic attribute
@@ -51,10 +52,10 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, VImageDimension);
 
-  typedef LabelMap< Self > LabelMapType;
+  typedef LabelMap< TSuperclass > LabelMapType;
 
   typedef typename LabelMapType::DirectionType OBBDirectionType;
-  typedef typename LabelMapType::PointType     OBBPointType;
+  typedef typename LabelMapType::PointType    OBBPointType;
   typedef Vector<double,ImageDimension >       OBBSizeType;
 
   void SetOrientedBoundingBoxOrigin( const OBBPointType &o )
