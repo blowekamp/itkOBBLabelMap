@@ -1,3 +1,4 @@
+
 /*=========================================================================
  *
  *  Copyright Insight Software Consortium
@@ -16,9 +17,28 @@
  *
  *=========================================================================*/
 #include "itkOrientedBoundingBoxLabelObject.h"
+#include "itkStatisticsLabelObject.h"
 #include <cstdlib>
+
+#include "itkTestingMacros.h"
 
 int itkOrientedBoundingBoxLabelObjectTest( int , char ** )
 {
+  // The basic goal of this test to cover the methods of the class
+
+
+  // check some template parameters for the super-class
+  typedef itk::OrientedBoundingBoxLabelObject< int, 3 > LabelObject1Type;
+  typedef itk::OrientedBoundingBoxLabelObject< int, 3, itk::LabelObject<int,3> > LabelObject2Type;
+
+  LabelObject1Type::Pointer labelObject1 = LabelObject1Type::New();
+  LabelObject2Type::Pointer labelObject2 = LabelObject2Type::New();
+
+  EXERCISE_BASIC_OBJECT_METHODS( labelObject1, LabelObject1Type );
+
+  LabelObject1Type::ConstPointer clabelObject1 = labelObject1.GetPointer();
+
+  // todo test set/get methods...
+
   return EXIT_SUCCESS;
 }
