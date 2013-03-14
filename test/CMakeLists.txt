@@ -5,12 +5,21 @@ itk_module_test()
 
 set(ITK${itk-module}Tests
   itkOrientedBoundingBoxLabelObjectTest.cxx
+  itkOrientedBoundingBoxLabelMapFilterTest1.cxx
+  itkOrientedBoundingBoxLabelMapFilterTest2.cxx
 )
 
 CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
 
 itk_add_test(NAME itkOrientedBoundingBoxLabelObjectTest
   COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelObjectTest )
+
+itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest1
+  COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelMapFilterTest1 )
+
+itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest2
+  COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelMapFilterTest2 )
+
 
 add_executable(itkOBBLabelMapExample OBB.cxx )
 
