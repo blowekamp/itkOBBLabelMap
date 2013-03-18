@@ -5,6 +5,7 @@ itk_module_test()
 
 set(ITK${itk-module}Tests
   itkBoundingBoxImageLabelMapFilterTest.cxx
+  itkOrientedBoundingBoxImageLabelMapFilterTest.cxx
   itkOrientedBoundingBoxLabelObjectTest.cxx
   itkOrientedBoundingBoxLabelMapFilterTest1.cxx
   itkOrientedBoundingBoxLabelMapFilterTest2.cxx

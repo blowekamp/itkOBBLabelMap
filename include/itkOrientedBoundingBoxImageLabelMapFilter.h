@@ -15,27 +15,27 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOrientedBoundingBoxLabelMapFilter_h
-#define __itkOrientedBoundingBoxLabelMapFilter_h
+#ifndef __itkOrientedBoundingBoxImageLabelMapFilter_h
+#define __itkOrientedBoundingBoxImageLabelMapFilter_h
 
 #include "itkInPlaceLabelMapFilter.h"
-#include "itkShapeLabelMapFilter.h"
-
+#include "itkOrientedBoundingBoxLabelMapFilter.h"
 namespace itk
 {
 
-/** \class OrientedBoundingBoxLabelMapFilter
+/** \class OrientedBoundingBoxImageLabelMapFilter
  * \ingroup ITKLabelMap
  */
 
 template< class TImage,
-          class TSuperclass = ShapeLabelMapFilter<TImage> >
-class ITK_EXPORT OrientedBoundingBoxLabelMapFilter:
+          class TFeatureImage = typename TImage::LabelObjectType::AttributeImageType,
+          class TSuperclass =  OrientedBoundingBoxLabelMapFilter<TImage> >
+class ITK_EXPORT OrientedBoundingBoxImageLabelMapFilter:
   public TSuperclass
 {
 public:
   /** Standard class typedefs. */
-  typedef OrientedBoundingBoxLabelMapFilter Self;
+  typedef OrientedBoundingBoxImageLabelMapFilter Self;
   typedef TSuperclass                       Superclass;
   typedef SmartPointer< Self >              Pointer;
   typedef SmartPointer< const Self >        ConstPointer;
@@ -49,7 +49,8 @@ public:
   typedef typename ImageType::SizeType         SizeType;
   typedef typename ImageType::LabelObjectType  LabelObjectType;
 
-  typedef typename LabelObjectType::MatrixType MatrixType;
+  typedef TFeatureImage FeatureImageType;
+  typedef typename LabelObjectType::AttributeImageType AttributeImageType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
@@ -58,17 +59,20 @@ public:
   itkNewMacro(Self);
 
   /** Runtime information support. */
-  itkTypeMacro(OrientedBoundingBoxLabelMapFilter, TSuperclass);
+  itkTypeMacro(OrientedBoundingBoxImageLabelMapFilter, TSuperclass);
+
+  itkSetInputMacro(FeatureImage, FeatureImageType)
+  itkGetInputMacro(FeatureImage, FeatureImageType)
 
 protected:
-  OrientedBoundingBoxLabelMapFilter() {};
+    OrientedBoundingBoxImageLabelMapFilter();
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  OrientedBoundingBoxLabelMapFilter(const Self &); //purposely not implemented
+  OrientedBoundingBoxImageLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
 
 };
@@ -77,7 +81,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkOrientedBoundingBoxLabelMapFilter.hxx"
+#include "itkOrientedBoundingBoxImageLabelMapFilter.hxx"
 #endif
 
-#endif // __itkOrientedBoundingBoxLabelMapFilter_h
+#endif // __itkOrientedBoundingBoxImageLabelMapFilter_h
