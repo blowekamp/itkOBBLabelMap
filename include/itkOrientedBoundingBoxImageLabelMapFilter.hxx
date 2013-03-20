@@ -30,6 +30,24 @@ OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
 ::OrientedBoundingBoxImageLabelMapFilter()
 {
   this->AddRequiredInputName("FeatureImage");
+
+  m_PaddingOffset.Fill(-0.5);
+  m_AttributeImageSpacing.Fill(1.0);
+
+  typedef LinearInterpolateImageFunction< AttributeImageType, double >   LinearInterpolatorType;
+  m_Interpolator = LinearInterpolatorType::New().GetPointer();
+  m_DefaultPixelValue = NumericTraits<AttributeImagePixelType>::ZeroValue( m_DefaultPixelValue );
+}
+
+
+template< class TImage, class TFeatureImage, class TLabelImage >
+void
+OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
+::SetPaddingOffset( typename SpacingType::ValueType o )
+{
+  SpacingType offset;
+  offset.Fill(o);
+  this->SetPaddingOffset(offset);
 }
 
 template< class TImage, class TFeatureImage, class TLabelImage >
@@ -44,22 +62,29 @@ OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
   typename FeatureImageType::Pointer feature = FeatureImageType::New();
   feature->Graft( this->GetFeatureImage() );
 
+  // transform padding offset from offset in output basis to physical space
+  Vector<double,ImageDimension> offset = labelObject->GetOrientedBoundingBoxDirection()*m_PaddingOffset;
+
   typedef itk::ResampleImageFilter<FeatureImageType, AttributeImageType> ResampleFilter;
 
   typename ResampleFilter::Pointer resampler = ResampleFilter::New();
 
-  typename AttributeImageType::SpacingType outSpacing;
-  outSpacing.Fill(feature->GetSpacing()[0]);
-
   typename AttributeImageType::SizeType outSize;
   for ( unsigned int i = 0; i < ImageDimension; ++i )
     {
-    outSize[i] = Math::Floor<itk::SizeValueType>( labelObject->GetOrientedBoundingBoxSize()[i]/ outSpacing[i] );
+    if ( m_PaddingOffset[i] < 0 && labelObject->GetOrientedBoundingBoxSize()[i]  <= -2.0*m_PaddingOffset[i] )
+      {
+      outSize[i] = 1;
+      }
+    else
+      {
+      outSize[i] = Math::Round<itk::SizeValueType>( (labelObject->GetOrientedBoundingBoxSize()[i]+2.0*m_PaddingOffset[i])/m_AttributeImageSpacing[i] )+1;
+      }
     }
 
   resampler->SetOutputDirection(labelObject->GetOrientedBoundingBoxDirection());
-  resampler->SetOutputOrigin(labelObject->GetOrientedBoundingBoxOrigin());
-  resampler->SetOutputSpacing(outSpacing);
+  resampler->SetOutputOrigin(labelObject->GetOrientedBoundingBoxOrigin()-offset);
+  resampler->SetOutputSpacing(this->m_AttributeImageSpacing);
   resampler->SetSize(outSize);
   resampler->SetInput(feature);
 
@@ -77,6 +102,12 @@ OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
+  os << indent << "PaddingOffset: " << m_PaddingOffset << std::endl;
+  os << indent << "AttributeimageSpacing: " << m_AttributeImageSpacing << std::endl;
+
+  os << indent << "Interpolator: " << m_Interpolator << std::endl;
+  os << indent << "DefaultPixelValue: " << m_DefaultPixelValue << std::endl;
 }
 
 } // end namespace itk

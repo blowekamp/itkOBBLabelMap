@@ -20,6 +20,8 @@
 
 #include "itkInPlaceLabelMapFilter.h"
 #include "itkOrientedBoundingBoxLabelMapFilter.h"
+#include "itkInterpolateImageFunction.h"
+
 namespace itk
 {
 
@@ -49,8 +51,14 @@ public:
   typedef typename ImageType::SizeType         SizeType;
   typedef typename ImageType::LabelObjectType  LabelObjectType;
 
+  typedef typename ImageType::SpacingType       SpacingType;
+
   typedef TFeatureImage FeatureImageType;
   typedef typename LabelObjectType::AttributeImageType AttributeImageType;
+  typedef typename AttributeImageType::PixelType AttributeImagePixelType;
+
+  /** Interpolator typedef. */
+  typedef InterpolateImageFunction< FeatureImageType, double >     InterpolatorType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
@@ -64,6 +72,39 @@ public:
   itkSetInputMacro(FeatureImage, FeatureImageType)
   itkGetInputMacro(FeatureImage, FeatureImageType)
 
+  /** Specifies an additional amount to grow or shrink the bounding
+   * box by when extracting to the output image, physical
+   * size. Positive numbers expand the image, while negative shrink.
+   *
+   * Defaults to -0.5, corresponding to one half-pixel with the
+   * default spacing. This is an adjustment for center-pixel physical
+   * locations, so that the edge of the pixel's extent corresponds to
+   * the edge of the oriented bounding box.
+   */
+  itkSetMacro(PaddingOffset, SpacingType);
+  itkGetConstMacro(PaddingOffset, SpacingType);
+  void SetPaddingOffset( typename SpacingType::ValueType o );
+
+  /** Get/Set the interpolator function use to resample the feature
+   * image. The default is LinearInterpolateImageFunction.
+  */
+  itkSetObjectMacro(Interpolator, InterpolatorType);
+  itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
+
+  /** Get/Set the pixel value when a transformed pixel is outside of the
+   * image.  The default default pixel value is 0. */
+  itkSetMacro(DefaultPixelValue, AttributeImagePixelType);
+  itkGetConstReferenceMacro(DefaultPixelValue, AttributeImagePixelType);
+
+
+  /** Specifies that spacing used to resample the attribute image
+   * onto.
+   *
+   * Defaults to 1.0;
+   **/
+  itkSetMacro(AttributeImageSpacing, SpacingType);
+  itkGetConstMacro(AttributeImageSpacing, SpacingType);
+
 protected:
     OrientedBoundingBoxImageLabelMapFilter();
 
@@ -75,8 +116,12 @@ private:
   OrientedBoundingBoxImageLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
 
-};
+  SpacingType m_PaddingOffset;
+  SpacingType m_AttributeImageSpacing;
 
+  typename InterpolatorType::Pointer m_Interpolator;
+  AttributeImagePixelType            m_DefaultPixelValue;
+};
 
 } // end namespace itk
 

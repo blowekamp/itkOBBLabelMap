@@ -81,7 +81,7 @@ int itkOrientedBoundingBoxImageLabelMapFilterTest( int argc, char **argv )
 
   OBBILabelMapFilter::Pointer toOBBILabelMap =  OBBILabelMapFilter::New();
   toOBBILabelMap->SetInput(toLabelMap->GetOutput());
-  //toOBBILabelMap->SetNumberOfThreads(1);
+  toOBBILabelMap->SetAttributeImageSpacing(featureReader->GetOutput()->GetSpacing());
   toOBBILabelMap->SetFeatureImage( featureReader->GetOutput() );
   FilterWatcher watcher(toOBBILabelMap);
   toOBBILabelMap->Update();
