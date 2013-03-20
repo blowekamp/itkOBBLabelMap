@@ -38,7 +38,7 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
   // this method is slow :(
   const ImageType *            output = this->GetOutput();
 
-  const VNLMatrixType rotationMatrix = labelObject->GetPrincipalAxes().GetVnlMatrix();
+  VNLMatrixType rotationMatrix = labelObject->GetPrincipalAxes().GetVnlMatrix();
   const typename LabelObjectType::CentroidType centroid = labelObject->GetCentroid();
   const unsigned int numLines = labelObject->GetNumberOfLines();
 
@@ -87,12 +87,6 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
       }
     }
 
-  //std::cout << "proj_min w/o offset: " << proj_min << std::endl;
-  //std::cout << "proj_max w/o offset: " << proj_max << std::endl;
-
-  // the center of the input voxel should the origin?
-  VNLVectorType proj_origin = proj_min;
-
   // The proj_min/max is from center of pixel to center of pixel. The
   // full extent of the pixels needs to include the offset bits to the
   // corners, projected onto the principle axis basis (rotationMatrix).
@@ -107,14 +101,6 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
     proj_max[i] += proj_offset[i];
     }
 
-
-  typename ImageType::PointType outOrigin((rotationMatrix.transpose()*proj_origin).data_block()); // offset by spacing....
-
-  for ( unsigned int i = 0; i < ImageDimension; ++i )
-    {
-    outOrigin[i] += centroid[i];
-    }
-
   Vector<double, ImageDimension> rsize; // real physical size
   for ( unsigned int i = 0; i < ImageDimension; ++i )
     {
@@ -122,9 +108,47 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
     }
 
 
-  labelObject->SetOrientedBoundingBoxOrigin(outOrigin);
+  //
+  // Invert rotation matrix, we will now convert points from the
+  // projected space back to the physical one
+  //
+  rotationMatrix.inplace_transpose();
+
+  VNLVectorType min = rotationMatrix*proj_min;
+  VNLVectorType max = rotationMatrix*proj_max;
+
+  for ( unsigned int i = 0; i < ImageDimension; ++i )
+    {
+    min[i] += centroid[i];
+    max[i] += centroid[i];
+    }
+
+  typename LabelObjectType::OBBVerticesType vertices;
+
+  // Use binary index to map the vertices of the OBB to an array. For
+  // example, in 2D, binary  counting will give[0,0], [0,1], [1,0],
+  // [1,1], which corresponds to [minX,minY], [minX,maxY],
+  // [maxX,minY], [maxX,maxY].
+  for (unsigned int i = 0; i <  LabelObjectType::OBBVerticesType::Length; ++i)
+    {
+    const unsigned int msb = 1 << (ImageDimension-1);
+     for ( unsigned int j = 0; j < ImageDimension; j++ )
+      {
+      if (i & msb>>j)
+        {
+        vertices[i][j] = max[j];
+        }
+      else
+        {
+        vertices[i][j] = min[j];
+        }
+      }
+    }
+
+
+  labelObject->SetOrientedBoundingBoxVertices(vertices);
   labelObject->SetOrientedBoundingBoxSize(rsize);
-  labelObject->SetOrientedBoundingBoxDirection( rotationMatrix.transpose() );
+  labelObject->SetOrientedBoundingBoxDirection( rotationMatrix );
 
 }
 

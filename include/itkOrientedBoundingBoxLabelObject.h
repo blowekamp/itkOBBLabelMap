@@ -36,6 +36,21 @@ template < class TLabel, unsigned int VImageDimension,
            class TSuperclass = ShapeLabelObject<TLabel, VImageDimension> >
 class ITK_EXPORT OrientedBoundingBoxLabelObject : public TSuperclass
 {
+private:
+
+  template <size_t X, unsigned short Y>
+    struct IntegerPow
+  {
+    static const size_t Result = X*IntegerPow<X, Y-1>::Result;
+  };
+
+  template <size_t X>
+    struct IntegerPow<X,0>
+  {
+    static const size_t Result = 1;
+  };
+
+
 public:
   /** Standard class typedefs */
   typedef OrientedBoundingBoxLabelObject         Self;
@@ -55,20 +70,31 @@ public:
   typedef LabelMap< TSuperclass > LabelMapType;
 
   typedef typename LabelMapType::DirectionType OBBDirectionType;
-  typedef typename LabelMapType::PointType    OBBPointType;
+  typedef typename LabelMapType::PointType     OBBPointType;
   typedef Vector<double,ImageDimension >       OBBSizeType;
 
-  void SetOrientedBoundingBoxOrigin( const OBBPointType &o )
+  typedef FixedArray<OBBPointType, IntegerPow<2,ImageDimension>::Result > OBBVerticesType;
+
+  void SetOrientedBoundingBoxVertices( const OBBVerticesType &d )
   {
-    m_OBBOrigin = o;
+    m_OBBVertices = d;
   }
+  const OBBVerticesType & GetOrientedBoundingBoxVertices() const
+  {
+      return m_OBBVertices;
+  }
+  OBBVerticesType GetOrientedBoundingBoxVertices()
+  {
+    return m_OBBVertices;
+  }
+
   const OBBPointType & GetOrientedBoundingBoxOrigin() const
   {
-      return m_OBBOrigin;
+    return m_OBBVertices[0];
   }
   OBBPointType GetOrientedBoundingBoxOrigin()
   {
-    return m_OBBOrigin;
+    return m_OBBVertices[0];
   }
 
   void SetOrientedBoundingBoxDirection( const OBBDirectionType &d )
@@ -105,11 +131,11 @@ public:
 
     // copy the data of the current type if possible
     const Self * src = dynamic_cast<const Self *>( lo );
-    if( src == NULL || this == src)
+    if( src == NULL )
       {
       return;
       }
-    this->m_OBBOrigin = src->m_OBBOrigin;
+    this->m_OBBVertices = src->m_OBBVertices;
     this->m_OBBDirection = src->m_OBBDirection;
     this->m_OBBSize = src->m_OBBSize;
     }
@@ -125,8 +151,9 @@ protected:
     {
     Superclass::PrintSelf( os, indent );
 
-    os << indent << "OBBOrigin: " << m_OBBOrigin << std::endl;
-    os << indent << "OBBDirection: " << m_OBBDirection << std::endl;
+    os << indent << "OBBOrigin: " << this->GetOrientedBoundingBoxOrigin() << std::endl;
+    os << indent << "OBBVertices: " << m_OBBVertices << std::endl;
+    os << indent << "OBBDirection: " << m_OBBDirection; // prints eol
     os << indent << "OBBSize: " << m_OBBSize << std::endl;
     }
 
@@ -140,7 +167,7 @@ private:
 
   OBBSizeType m_OBBSize;
 
-
+  OBBVerticesType m_OBBVertices;
 };
 
 } // end namespace itk
