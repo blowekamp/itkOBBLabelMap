@@ -40,7 +40,7 @@ class ITK_EXPORT AttributeImageLabelObject : public TSuperclass
 {
 public:
   /** Standard class typedefs */
-  typedef AttributeImageLabelObject         Self;
+  typedef AttributeImageLabelObject              Self;
   typedef TSuperclass                            Superclass;
   typedef SmartPointer<Self>                     Pointer;
   typedef typename Superclass::LabelObjectType   LabelObjectType;
@@ -94,7 +94,16 @@ protected:
     {
     Superclass::PrintSelf( os, indent );
 
-    os << indent << "AttributeImage: " << m_AttributeImage << std::endl;
+    os << indent << "AttributeImage: ";
+
+    if ( m_AttributeImage.IsNull() )
+      {
+      os << "NULL" << std::endl;
+      }
+    else
+      {
+      os << m_AttributeImage << std::endl;
+      }
     }
 
 private:
