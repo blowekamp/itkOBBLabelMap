@@ -105,6 +105,12 @@ public:
   itkSetMacro(AttributeImageSpacing, SpacingType);
   itkGetConstMacro(AttributeImageSpacing, SpacingType);
 
+  // NOTE: This is not the best thing to do. We only want to ignore
+  // the geometry of the spacing image, not all of them. So if another
+  // filter has this as a requirement it may be wrong... but such a
+  // filter does not exit yet.
+  virtual void VerifyInputInformation() {}
+
 protected:
     OrientedBoundingBoxImageLabelMapFilter();
 
