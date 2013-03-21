@@ -158,8 +158,6 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-
-
 }
 
 } // end namespace itk

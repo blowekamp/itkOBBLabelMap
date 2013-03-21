@@ -29,6 +29,8 @@ BoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
 ::BoundingBoxImageLabelMapFilter()
 {
   this->AddRequiredInputName("FeatureImage");
+
+  m_PaddingOffset.Fill(0);
 }
 
 
@@ -99,7 +101,7 @@ BoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  std::cout << "PaddingOffset: " << m_PaddingOffset;
+  std::cout << indent << "PaddingOffset: " << m_PaddingOffset;
 }
 
 } // end namespace itk

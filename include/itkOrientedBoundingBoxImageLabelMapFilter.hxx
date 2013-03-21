@@ -62,7 +62,9 @@ OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
   typename FeatureImageType::Pointer feature = FeatureImageType::New();
   feature->Graft( this->GetFeatureImage() );
 
-  // transform padding offset from offset in output basis to physical space
+  // transform padding offset from offset in output basis to physical
+  // space
+
   Vector<double,ImageDimension> offset = labelObject->GetOrientedBoundingBoxDirection()*m_PaddingOffset;
 
   typedef itk::ResampleImageFilter<FeatureImageType, AttributeImageType> ResampleFilter;
