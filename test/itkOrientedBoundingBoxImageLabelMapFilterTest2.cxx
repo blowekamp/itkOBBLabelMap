@@ -33,7 +33,7 @@
 #include "itkTestingMacros.h"
 #include "itkFilterWatcher.h"
 
-int itkOrientedBoundingBoxImageLabelMapFilterTest( int argc, char **argv )
+int itkOrientedBoundingBoxImageLabelMapFilterTest2( int argc, char **argv )
 {
 
   if (argc < 5)

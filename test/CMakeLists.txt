@@ -8,7 +8,8 @@ set( ITK${itk-module}_DATA_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/data/ )
 set(ITK${itk-module}Tests
   itkOBBExample.cxx
   itkBoundingBoxImageLabelMapFilterTest.cxx
-  itkOrientedBoundingBoxImageLabelMapFilterTest.cxx
+  itkOrientedBoundingBoxImageLabelMapFilterTest1.cxx
+  itkOrientedBoundingBoxImageLabelMapFilterTest2.cxx
   itkOrientedBoundingBoxLabelObjectTest.cxx
   itkOrientedBoundingBoxLabelMapFilterTest1.cxx
   itkOrientedBoundingBoxLabelMapFilterTest2.cxx
@@ -34,8 +35,11 @@ itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest2
     DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png}
     ${ITK_TEST_OUTPUT_DIR}/itkOrientedBoundingBoxLabelMapFilterTest2.mha 94)
 
-itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest
-  COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest
+itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest1
+  COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest1)
+
+itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest2
+  COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest2
     DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png}
     ${ITK_TEST_OUTPUT_DIR}/itkBoundingBoxLabelMapFilterTest2.mha 94)
 
