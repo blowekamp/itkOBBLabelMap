@@ -12,7 +12,13 @@ set(ITK${itk-module}Tests
   itkOrientedBoundingBoxLabelMapFilterTest2.cxx
 )
 
-CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
+CreateTestDriver(${itk-module}  "${${itk-module}-Test_LIBRARIES}"
+  "${ITK${itk-module}Tests}")
+
+add_executable(itkOBBLabelMapExample OBB.cxx )
+
+target_link_libraries(itkOBBLabelMapExample ${${itk-module}-Test_LIBRARIES} )
+
 
 itk_add_test(NAME itkOrientedBoundingBoxLabelObjectTest
   COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelObjectTest )
@@ -21,9 +27,5 @@ itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest1
   COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelMapFilterTest1 )
 
 itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest2
-  COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelMapFilterTest2 )
-
-
-add_executable(itkOBBLabelMapExample OBB.cxx )
-
-target_link_libraries(itkOBBLabelMapExample ${${itk-module}-Test_LIBRARIES} )
+  COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelMapFilterTest2
+    DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1-markers.png} ${ITK_TEST_OUTPUT_DIR}/itkOrientedBoundingBoxLabelMapFilterTest2.mha 94)

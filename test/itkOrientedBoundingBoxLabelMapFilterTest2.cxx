@@ -39,7 +39,7 @@ int itkOrientedBoundingBoxLabelMapFilterTest2( int argc, char **argv )
 
   if (argc < 5)
     {
-    std::cerr << "Usage: " << argv[0] << "imageFileName labelImageFileName outputImageFileName labelID" << std::endl;
+    std::cerr << "Usage: " << argv[0] << "imageFileName labelImageFieName outputImageFileName labelID" << std::endl;
     return 0;
     }
 
