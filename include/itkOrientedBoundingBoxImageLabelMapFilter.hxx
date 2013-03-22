@@ -88,6 +88,8 @@ OrientedBoundingBoxImageLabelMapFilter< TImage, TFeatureImage, TLabelImage >
   resampler->SetOutputOrigin(labelObject->GetOrientedBoundingBoxOrigin()-offset);
   resampler->SetOutputSpacing(this->m_AttributeImageSpacing);
   resampler->SetSize(outSize);
+  resampler->SetInterpolator(m_Interpolator);
+  resampler->SetDefaultPixelValue(m_DefaultPixelValue);
   resampler->SetInput(feature);
 
   resampler->SetNumberOfThreads(1);

@@ -53,7 +53,7 @@ public:
   typedef typename ImageType::SizeType         SizeType;
   typedef typename ImageType::LabelObjectType  LabelObjectType;
 
-  typedef typename ImageType::SpacingType       SpacingType;
+  typedef typename ImageType::SpacingType      SpacingType;
 
   typedef TFeatureImage FeatureImageType;
   typedef typename LabelObjectType::AttributeImageType AttributeImageType;
