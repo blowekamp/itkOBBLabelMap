@@ -28,6 +28,7 @@ template< class TImage, class TLabelImage > class ShapeLabelMapFilter;
 
 /** \class BoundingBoxImageLabelMapFilter
  * \ingroup ITKLabelMap
+ * \ingroup ITKOBBLabelMap
  */
 
 template< class TImage,

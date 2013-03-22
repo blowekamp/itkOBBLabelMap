@@ -26,7 +26,9 @@ namespace itk
 {
 
 /** \class OrientedBoundingBoxImageLabelMapFilter
+
  * \ingroup ITKLabelMap
+ * \ingroup ITKOBBLabelMap
  */
 
 template< class TImage,
