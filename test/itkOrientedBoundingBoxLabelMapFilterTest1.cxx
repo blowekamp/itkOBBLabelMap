@@ -26,7 +26,7 @@
 
 int itkOrientedBoundingBoxLabelMapFilterTest1( int , char ** )
 {
-  // The basic goal of this test to cover the methods of the class
+  // The basic goal of this test is to cover the methods of the class
 
   const unsigned int ImageDimension = 3;
   typedef unsigned int LabelPixelType;
@@ -35,14 +35,15 @@ int itkOrientedBoundingBoxLabelMapFilterTest1( int , char ** )
 
   // check some template parameters for the super-class
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > LabelObjectType;
-   typedef itk::LabelMap<LabelObjectType> LabelMapType;
-   typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType> LabelMapFilter;
+  typedef itk::LabelMap<LabelObjectType> LabelMapType;
+  typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType> LabelMapFilter;
 
-   LabelObjectType::Pointer labelObject = LabelObjectType::New();
-   LabelMapType::Pointer  labelMap =  LabelMapType::New();
+  LabelObjectType::Pointer labelObject = LabelObjectType::New();
+  LabelMapType::Pointer  labelMap =  LabelMapType::New();
 
-   LabelMapFilter::Pointer labelMapFiler =  LabelMapFilter::New();
+  LabelMapFilter::Pointer labelMapFilter =  LabelMapFilter::New();
 
+  EXERCISE_BASIC_OBJECT_METHODS( labelMapFilter, LabelMapFilter );
 
   return EXIT_SUCCESS;
 }
