@@ -18,6 +18,7 @@
 #ifndef __itkAttributeImageLabelObject_h
 #define __itkAttributeImageLabelObject_h
 
+#include "itkImage.h"
 #include "itkLabelMap.h"
 #include "itkShapeLabelObject.h"
 
