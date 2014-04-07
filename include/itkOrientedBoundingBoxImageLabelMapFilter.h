@@ -89,6 +89,8 @@ public:
 
   /** Get/Set the interpolator function use to resample the feature
    * image. The default is LinearInterpolateImageFunction.
+   *
+   * \note Currently the parameter is ignored due to a threading issue.
   */
   itkSetObjectMacro(Interpolator, InterpolatorType);
   itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
