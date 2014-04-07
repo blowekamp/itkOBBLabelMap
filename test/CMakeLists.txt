@@ -35,18 +35,10 @@ itk_add_test(NAME itkOrientedBoundingBoxLabelMapFilterTest2
     DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png}
     ${ITK_TEST_OUTPUT_DIR}/itkOrientedBoundingBoxLabelMapFilterTest2.mha 94)
 
-itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest1
-  COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest1)
-
-itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest2
-  COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest2
-    DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png}
-    ${ITK_TEST_OUTPUT_DIR}/itkBoundingBoxLabelMapFilterTest2.mha 94)
-
-itk_add_test(NAME itkOrientedBoundingBoxImageLabelMapFilterTest
+itk_add_test(NAME itkBoundingBoxImageLabelMapFilterTest
   COMMAND ${itk-module}TestDriver itkBoundingBoxImageLabelMapFilterTest
     DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png}
-    ${ITK_TEST_OUTPUT_DIR}/itkOrientedBoundingBoxImageLabelMapFilterTest.mha 94)
+    ${ITK_TEST_OUTPUT_DIR}/itkBoundingBoxImageLabelMapFilterTest.mha 94)
 
 
 itk_add_test(NAME itkOBBExample1
