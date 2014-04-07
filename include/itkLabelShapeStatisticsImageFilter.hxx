@@ -97,8 +97,11 @@ LabelShapeStatisticsImageFilter<TInputImage, TLabelImage>
   typedef itk::LabelImageToLabelMapFilter<LabelImageType, LabelMapType> ToLabelMapFilterType;
   typename ToLabelMapFilterType::Pointer toLabelMap = ToLabelMapFilterType::New();
   toLabelMap->SetInput( labelImage );
+  toLabelMap->SetBackgroundValue( this->m_BackgroundValue );
+
   toLabelMap->SetNumberOfThreads(this->GetNumberOfThreads());
   progress->RegisterInternalFilter(toLabelMap, .3);
+
 
   typedef itk::ShapeLabelMapFilter< LabelMapType > BaseLabelMapFilterType;
   typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType, BaseLabelMapFilterType> DerivedLabelMapFilterType;
@@ -106,6 +109,8 @@ LabelShapeStatisticsImageFilter<TInputImage, TLabelImage>
 
   typename LabelMapFilterType::Pointer filter = LabelMapFilterType::New();
   filter->SetInput(toLabelMap->GetOutput());
+  filter->SetComputeFeretDiameter( this->m_ComputeFeretDiameter );
+  filter->SetComputePerimeter( this->m_ComputePerimeter );
 
   filter->SetNumberOfThreads(this->GetNumberOfThreads());
   progress->RegisterInternalFilter(filter, .7);
