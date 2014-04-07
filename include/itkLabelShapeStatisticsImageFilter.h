@@ -19,12 +19,8 @@
 #define __itkLabelShapeStatisticsImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkLabelImageToLabelMapFilter.h"
-#include "itkShapeLabelMapFilter.h"
 #include "itkShapeLabelObject.h"
 #include "itkOrientedBoundingBoxLabelObject.h"
-#include "itkOrientedBoundingBoxLabelMapFilter.h"
-#include "itkProgressAccumulator.h"
 
 namespace itk
 {
@@ -152,76 +148,17 @@ public:
 #endif
 
 protected:
-  LabelShapeStatisticsImageFilter()
-    {
-      m_BackgroundValue = NumericTraits< LabelPixelType >::NonpositiveMin();
-      m_ComputeFeretDiameter = false;
-      m_ComputePerimeter = true;
+  LabelShapeStatisticsImageFilter();
 
-      this->SetPrimaryInputName( "IntensityImage" );
-      this->AddRequiredInputName( "LabelImage", 1 );
-    }
+  ~LabelShapeStatisticsImageFilter();
 
-  ~LabelShapeStatisticsImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const
-    {
-      Superclass::PrintSelf(os, indent);
+  void PrintSelf(std::ostream & os, Indent indent) const;
 
-      os << indent << "BackgroundValue: "
-         << static_cast< typename NumericTraits< LabelPixelType >::PrintType >( m_BackgroundValue ) << std::endl;
-      os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
-      os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
-    }
+  void EnlargeOutputRequestedRegion(DataObject *data);
 
-  void EnlargeOutputRequestedRegion(DataObject *data)
-    {
-      Superclass::EnlargeOutputRequestedRegion(data);
-      data->SetRequestedRegionToLargestPossibleRegion();
-    }
+  void AllocateOutputs();
 
-  void AllocateOutputs()
-    {
-      // Pass the input through as the output
-      IntensityImageType *image =
-        const_cast< IntensityImageType * >( this->GetInput() );
-
-      this->GraftOutput(image);
-
-      // Nothing that needs to be allocated for the remaining outputs
-    }
-
-  void GenerateData()
-    {
-
-      const TInputImage* inputImage( this->GetInput() );
-      const TLabelImage* labelImage( this->GetLabelImage() );
-
-      // Create a process accumulator for tracking the progress of minipipeline
-      ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
-      progress->SetMiniPipelineFilter(this);
-
-
-      typedef itk::LabelImageToLabelMapFilter<LabelImageType, LabelMapType> ToLabelMapFilterType;
-      typename ToLabelMapFilterType::Pointer toLabelMap = ToLabelMapFilterType::New();
-      toLabelMap->SetInput( labelImage );
-      toLabelMap->SetNumberOfThreads(this->GetNumberOfThreads());
-      progress->RegisterInternalFilter(toLabelMap, .3);
-
-      typedef itk::ShapeLabelMapFilter< LabelMapType > BaseLabelMapFilterType;
-      typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType, BaseLabelMapFilterType> DerivedLabelMapFilterType;
-      typedef DerivedLabelMapFilterType LabelMapFilterType;
-
-      typename LabelMapFilterType::Pointer filter = LabelMapFilterType::New();
-      filter->SetInput(toLabelMap->GetOutput());
-
-      filter->SetNumberOfThreads(this->GetNumberOfThreads());
-      progress->RegisterInternalFilter(filter, .7);
-
-      filter->Update();
-
-      m_LabelMap = filter->GetOutput();
-
-    }
+  void GenerateData();
 
 private:
   LabelShapeStatisticsImageFilter(const Self &); //purposely not implemented
@@ -238,7 +175,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-//#include "itkLabelShapeStatisticsImageFilter.hxx"
+#include "itkLabelShapeStatisticsImageFilter.hxx"
 #endif
 
 #endif
