@@ -29,6 +29,11 @@ itk_add_test(NAME itkLabelShapeStatisticsImageFilterTest1
   COMMAND ${itk-module}TestDriver itkLabelShapeStatisticsImageFilterTest
     DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png})
 
+
+itk_add_test(NAME itkLabelShapeStatisticsImageFilterTest2
+  COMMAND ${itk-module}TestDriver itkLabelShapeStatisticsImageFilterTest
+  ${ITK${itk-module}_DATA_ROOT}/jelly_beans.png ${ITK${itk-module}_DATA_ROOT}/jelly_beans_seg.png)
+
 itk_add_test(NAME itkOrientedBoundingBoxLabelObjectTest
   COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelObjectTest )
 
