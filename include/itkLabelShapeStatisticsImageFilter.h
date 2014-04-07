@@ -55,12 +55,13 @@ public:
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int, TLabelImage::ImageDimension);
 
-  /** LabelObject related typedefs */
+  /** LabelObject typedefs */
   typedef itk::ShapeLabelObject<LabelPixelType,  ImageDimension>    BaseLabelObjectType;
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType,
                                                ImageDimension,
                                                BaseLabelObjectType> DerivedLabelObjectType;
 
+  /** LabelObject attribute typedefs */
   typedef DerivedLabelObjectType                                 LabelObjectType;
   typedef typename LabelObjectType::RegionType                   LabelObjectRegionType;
   typedef double                                                 LabelObjectRealType;
@@ -110,7 +111,7 @@ public:
       return type ();                                                   \
     }
 
-  // Shape Label Object
+  // ShapeLabel Object
   itkGetLabelObjectAttribute( BoundingBox, LabelObjectRegionType );
   itkGetLabelObjectAttribute( PhysicalSize, LabelObjectRealType );
   itkGetLabelObjectAttribute( NumberOfPixels, SizeValueType );
@@ -131,6 +132,7 @@ public:
   itkGetLabelObjectAttribute( GetPrincipalAxesToPhysicalAxesTransform, LabelObjectAffineTransformPointer );
   itkGetLabelObjectAttribute( PhysicalAxesToPrincipalAxesTransform, LabelObjectAffineTransformPointer );
 
+  // OrientedBOundingBox Label Object attributes
   itkGetLabelObjectAttribute( OrientedBoundingBoxVertices, LabelObjectOBBVerticesType );
   itkGetLabelObjectAttribute( OrientedBoundingBoxOrigin, LabelObjectOBBPointType );
   itkGetLabelObjectAttribute( OrientedBoundingBoxDirection, LabelObjectOBBDirectionType );
