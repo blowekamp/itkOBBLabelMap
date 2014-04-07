@@ -7,6 +7,7 @@ set( ITK${itk-module}_DATA_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/data/ )
 
 set(ITK${itk-module}Tests
   itkOBBExample.cxx
+  itkLabelShapeStatisticsImageFilterTest.cxx
   itkBoundingBoxImageLabelMapFilterTest.cxx
   itkOrientedBoundingBoxImageLabelMapFilterTest1.cxx
   itkOrientedBoundingBoxImageLabelMapFilterTest2.cxx
@@ -23,6 +24,10 @@ add_executable(itkOBBLabelMapExample OBB.cxx )
 
 target_link_libraries(itkOBBLabelMapExample ${${itk-module}-Test_LIBRARIES} )
 
+
+itk_add_test(NAME itkLabelShapeStatisticsImageFilterTest1
+  COMMAND ${itk-module}TestDriver itkLabelShapeStatisticsImageFilterTest
+    DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png} DATA{${ITK_DATA_ROOT}/Input/cthead1Label.png})
 
 itk_add_test(NAME itkOrientedBoundingBoxLabelObjectTest
   COMMAND ${itk-module}TestDriver itkOrientedBoundingBoxLabelObjectTest )
