@@ -19,8 +19,11 @@
 #define __itkLabelShapeStatisticsImageFilter_h
 
 #include "itkImageToImageFilter.h"
-#include "itkLabelImageToShapeLabelMapFilter.h"
+#include "itkLabelImageToLabelMapFilter.h"
+#include "itkShapeLabelMapFilter.h"
 #include "itkShapeLabelObject.h"
+#include "itkOrientedBoundingBoxLabelObject.h"
+#include "itkOrientedBoundingBoxLabelMapFilter.h"
 #include "itkProgressAccumulator.h"
 
 namespace itk
@@ -57,12 +60,22 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, TLabelImage::ImageDimension);
 
   /** LabelObject related typedefs */
-  typedef itk::ShapeLabelObject<LabelPixelType,  ImageDimension> LabelObjectType;
-  typedef typename LabelObjectType::RegionType   LabelObjectRegionType;
-  typedef double                                 LabelObjectRealType;
-  typedef typename LabelObjectType::CentroidType LabelObjectCentroidType;
-  typedef typename LabelObjectType::VectorType   LabelObjectVectorType;
-  typedef typename LabelObjectType::MatrixType   LabelObjectMatrixType;
+  typedef itk::ShapeLabelObject<LabelPixelType,  ImageDimension>    BaseLabelObjectType;
+  typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType,
+                                               ImageDimension,
+                                               BaseLabelObjectType> DerivedLabelObjectType;
+
+  typedef DerivedLabelObjectType                                 LabelObjectType;
+  typedef typename LabelObjectType::RegionType                   LabelObjectRegionType;
+  typedef double                                                 LabelObjectRealType;
+  typedef typename LabelObjectType::CentroidType                 LabelObjectCentroidType;
+  typedef typename LabelObjectType::VectorType                   LabelObjectVectorType;
+  typedef typename LabelObjectType::MatrixType                   LabelObjectMatrixType;
+  typedef typename LabelObjectType::AffineTransformPointer       LabelObjectAffineTransformPointer;
+  typedef typename LabelObjectType::OBBVerticesType              LabelObjectOBBVerticesType;
+  typedef typename LabelObjectType::OBBPointType                 LabelObjectOBBPointType;
+  typedef typename LabelObjectType::OBBDirectionType             LabelObjectOBBDirectionType;
+  typedef typename LabelObjectType::OBBSizeType                  LabelObjectOBBSizeType;
 
   typedef itk::LabelMap<LabelObjectType>         LabelMapType;
   typedef typename LabelMapType::LabelVectorType ValidLabelValuesContainerType;
@@ -79,36 +92,53 @@ public:
   bool HasLabel(LabelPixelType label) const { return this->m_LabelMap->HasLabel(label); }
   SizeValueType GetNumberOfLabels() const { return this->m_LabelMap->GetNumberOfLabelObject(); }
 
-  // todo background, initial condition
+  itkSetMacro(BackgroundValue, LabelPixelType);
+  itkGetConstMacro(BackgroundValue, LabelPixelType);
+
+  itkSetMacro(ComputeFeretDiameter, bool);
+  itkGetConstReferenceMacro(ComputeFeretDiameter, bool);
+  itkBooleanMacro(ComputeFeretDiameter);
+
+  itkSetMacro(ComputePerimeter, bool);
+  itkGetConstReferenceMacro(ComputePerimeter, bool);
+  itkBooleanMacro(ComputePerimeter);
+
 
 #define itkGetLabelObjectAttribute(name, type)                     \
-  inline const type &Get##name( LabelPixelType label ) const       \
-    {                                                              \
-      return this->m_LabelMap->GetLabelObject(label)->Get##name(); \
+  inline type Get##name( LabelPixelType label ) const            \
+    {                                                                   \
+      if (this->m_LabelMap.IsNotNull())                                 \
+        {                                                               \
+        return this->m_LabelMap->GetLabelObject(label)->Get##name();    \
+        }                                                               \
+      return type ();                                                   \
     }
 
   // Shape Label Object
   itkGetLabelObjectAttribute( BoundingBox, LabelObjectRegionType );
-  itkGetLabelObjectAttribute( PhysicalSize, double );
+  itkGetLabelObjectAttribute( PhysicalSize, LabelObjectRealType );
   itkGetLabelObjectAttribute( NumberOfPixels, SizeValueType );
   itkGetLabelObjectAttribute( Centroid, LabelObjectCentroidType );
   itkGetLabelObjectAttribute( NumberOfPixelsOnBorder, SizeValueType );
-  itkGetLabelObjectAttribute( PerimeterOnBorder, double );
-  itkGetLabelObjectAttribute( FeretDiameter, double );
+  itkGetLabelObjectAttribute( PerimeterOnBorder, LabelObjectRealType );
+  itkGetLabelObjectAttribute( FeretDiameter, LabelObjectRealType );
   itkGetLabelObjectAttribute( PrincipalMoments, LabelObjectVectorType );
   itkGetLabelObjectAttribute( PrincipalAxes, LabelObjectMatrixType );
-  itkGetLabelObjectAttribute( Elongation, double );
-  itkGetLabelObjectAttribute( Perimeter, double );
-  itkGetLabelObjectAttribute( Roundness, double );
-  itkGetLabelObjectAttribute( EquivalentSphericalRadius, double );
-  itkGetLabelObjectAttribute( EquivalentEllipsoidDiameter, double );
-  itkGetLabelObjectAttribute( Flattness, double );
-  itkGetLabelObjectAttribute( PerimeterOnBorderRatio, double );
+  itkGetLabelObjectAttribute( Elongation, LabelObjectRealType );
+  itkGetLabelObjectAttribute( Perimeter, LabelObjectRealType );
+  itkGetLabelObjectAttribute( Roundness, LabelObjectRealType );
+  itkGetLabelObjectAttribute( EquivalentSphericalRadius, LabelObjectRealType );
+  itkGetLabelObjectAttribute( EquivalentSphericalPerimeter, LabelObjectRealType );
+  itkGetLabelObjectAttribute( EquivalentEllipsoidDiameter, LabelObjectVectorType );
+  itkGetLabelObjectAttribute( Flatness, LabelObjectRealType );
+  itkGetLabelObjectAttribute( PerimeterOnBorderRatio, LabelObjectRealType );
+  itkGetLabelObjectAttribute( GetPrincipalAxesToPhysicalAxesTransform, LabelObjectAffineTransformPointer );
+  itkGetLabelObjectAttribute( PhysicalAxesToPrincipalAxesTransform, LabelObjectAffineTransformPointer );
 
-#if 0
-  GetPrincipalAxesToPhysicalAxesTransform AffineTransformPointer
-  PhysicalAxesToPrincipalAxesTransform AffineTransformPointer
-#endif
+  itkGetLabelObjectAttribute( OrientedBoundingBoxVertices, LabelObjectOBBVerticesType );
+  itkGetLabelObjectAttribute( OrientedBoundingBoxOrigin, LabelObjectOBBPointType );
+  itkGetLabelObjectAttribute( OrientedBoundingBoxDirection, LabelObjectOBBDirectionType );
+  itkGetLabelObjectAttribute( OrientedBoundingBoxSize, LabelObjectOBBSizeType );
 
 #undef itkGetLabelObjectAttribute
 
@@ -124,13 +154,23 @@ public:
 protected:
   LabelShapeStatisticsImageFilter()
     {
+      m_BackgroundValue = NumericTraits< LabelPixelType >::NonpositiveMin();
+      m_ComputeFeretDiameter = false;
+      m_ComputePerimeter = true;
+
       this->SetPrimaryInputName( "IntensityImage" );
       this->AddRequiredInputName( "LabelImage", 1 );
     }
+
   ~LabelShapeStatisticsImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const
     {
       Superclass::PrintSelf(os, indent);
+
+      os << indent << "BackgroundValue: "
+         << static_cast< typename NumericTraits< LabelPixelType >::PrintType >( m_BackgroundValue ) << std::endl;
+      os << indent << "ComputeFeretDiameter: " << m_ComputeFeretDiameter << std::endl;
+      os << indent << "ComputePerimeter: " << m_ComputePerimeter << std::endl;
     }
 
   void EnlargeOutputRequestedRegion(DataObject *data)
@@ -160,13 +200,22 @@ protected:
       ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
       progress->SetMiniPipelineFilter(this);
 
-      typedef itk::LabelImageToShapeLabelMapFilter< TLabelImage, LabelMapType > ToShapeLabelMapFilter;
 
-      typename ToShapeLabelMapFilter::Pointer filter = ToShapeLabelMapFilter::New();
-      filter->SetInput(labelImage);
+      typedef itk::LabelImageToLabelMapFilter<LabelImageType, LabelMapType> ToLabelMapFilterType;
+      typename ToLabelMapFilterType::Pointer toLabelMap = ToLabelMapFilterType::New();
+      toLabelMap->SetInput( labelImage );
+      toLabelMap->SetNumberOfThreads(this->GetNumberOfThreads());
+      progress->RegisterInternalFilter(toLabelMap, .3);
+
+      typedef itk::ShapeLabelMapFilter< LabelMapType > BaseLabelMapFilterType;
+      typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType, BaseLabelMapFilterType> DerivedLabelMapFilterType;
+      typedef DerivedLabelMapFilterType LabelMapFilterType;
+
+      typename LabelMapFilterType::Pointer filter = LabelMapFilterType::New();
+      filter->SetInput(toLabelMap->GetOutput());
 
       filter->SetNumberOfThreads(this->GetNumberOfThreads());
-      progress->RegisterInternalFilter(filter, 1.0);
+      progress->RegisterInternalFilter(filter, .7);
 
       filter->Update();
 
@@ -177,6 +226,10 @@ protected:
 private:
   LabelShapeStatisticsImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
+  LabelPixelType m_BackgroundValue;
+  bool           m_ComputeFeretDiameter;
+  bool           m_ComputePerimeter;
 
   typename LabelMapType::ConstPointer m_LabelMap;
 

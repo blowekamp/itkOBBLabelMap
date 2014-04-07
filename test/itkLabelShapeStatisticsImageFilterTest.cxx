@@ -29,7 +29,7 @@ int itkLabelShapeStatisticsImageFilterTest( int argc, char ** argv )
     return 0;
     }
 
-  const unsigned int Dimension = 3;
+  const unsigned int Dimension = 2;
   typedef itk::Image<float, Dimension>        IntensityImageType;
   typedef itk::Image<unsigned int, Dimension> LabelImageType;
 
@@ -73,9 +73,13 @@ int itkLabelShapeStatisticsImageFilterTest( int argc, char ** argv )
     printHelper( Roundness );
     printHelper( EquivalentSphericalRadius );
     printHelper( EquivalentEllipsoidDiameter );
-    printHelper( Flattness );
+    printHelper( Flatness );
     printHelper( PerimeterOnBorderRatio );
 
+    printHelper( OrientedBoundingBoxVertices );
+    printHelper( OrientedBoundingBoxOrigin );
+    printHelper( OrientedBoundingBoxDirection );
+    printHelper( OrientedBoundingBoxSize );
     ++iter;
     }
 
