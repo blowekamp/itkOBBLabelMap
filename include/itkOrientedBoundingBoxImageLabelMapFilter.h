@@ -113,14 +113,14 @@ public:
   // the geometry of the spacing image, not all of them. So if another
   // filter has this as a requirement it may be wrong... but such a
   // filter does not exit yet.
-  virtual void VerifyInputInformation() {}
+  virtual void VerifyInputInformation() {} ITK_OVERRIDE
 
 protected:
-    OrientedBoundingBoxImageLabelMapFilter();
+  OrientedBoundingBoxImageLabelMapFilter();
 
-  virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
+  virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject) ITK_OVERRIDE;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  void PrintSelf(std::ostream & os, Indent indent) const ITK_OVERRIDE;
 
 private:
   OrientedBoundingBoxImageLabelMapFilter(const Self &); //purposely not implemented

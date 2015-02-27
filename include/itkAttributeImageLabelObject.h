@@ -74,7 +74,7 @@ public:
 
 
 
-  virtual void CopyAttributesFrom( const LabelObjectType * lo )
+  virtual void CopyAttributesFrom( const LabelObjectType * lo ) ITK_OVERRIDE
     {
     Superclass::CopyAttributesFrom( lo );
 
@@ -91,7 +91,7 @@ protected:
   AttributeImageLabelObject() { }
 
 
-  void PrintSelf(std::ostream& os, Indent indent) const
+  void PrintSelf(std::ostream& os, Indent indent) const ITK_OVERRIDE
     {
     Superclass::PrintSelf( os, indent );
 

@@ -64,9 +64,9 @@ public:
 protected:
   OrientedBoundingBoxLabelMapFilter() {};
 
-  virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
+  virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject) ITK_OVERRIDE;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  void PrintSelf(std::ostream & os, Indent indent) const ITK_OVERRIDE;
 
 private:
   OrientedBoundingBoxLabelMapFilter(const Self &); //purposely not implemented

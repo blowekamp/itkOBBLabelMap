@@ -33,7 +33,7 @@ int itkOrientedBoundingBoxImageLabelMapFilterTest1( int , char ** )
 
   const unsigned int ImageDimension = 3;
   typedef unsigned int LabelPixelType;
-  typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
+  //typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
   typedef itk::Image<double, ImageDimension> ImageType;
 
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > OBBLabelObjectType;

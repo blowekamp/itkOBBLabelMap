@@ -154,13 +154,13 @@ protected:
 
   ~LabelShapeStatisticsImageFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  void PrintSelf(std::ostream & os, Indent indent) const ITK_OVERRIDE;
 
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  void EnlargeOutputRequestedRegion(DataObject *data) ITK_OVERRIDE;
 
-  void AllocateOutputs();
+  void AllocateOutputs() ITK_OVERRIDE;
 
-  void GenerateData();
+  void GenerateData() ITK_OVERRIDE;
 
 private:
   LabelShapeStatisticsImageFilter(const Self &); //purposely not implemented
