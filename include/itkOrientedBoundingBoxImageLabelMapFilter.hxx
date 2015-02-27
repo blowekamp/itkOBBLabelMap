@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOrientedBoundingBoxImageLabelMapFilter_hxx
-#define __itkOrientedBoundingBoxImageLabelMapFilter_hxx
+#ifndef itkOrientedBoundingBoxImageLabelMapFilter_hxx
+#define itkOrientedBoundingBoxImageLabelMapFilter_hxx
 
 #include "itkOrientedBoundingBoxImageLabelMapFilter.h"
 #include "itkResampleImageFilter.h"

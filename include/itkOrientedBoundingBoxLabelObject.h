@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkOrientedBoundingBoxLabelObject_h
-#define __itkOrientedBoundingBoxLabelObject_h
+#ifndef itkOrientedBoundingBoxLabelObject_h
+#define itkOrientedBoundingBoxLabelObject_h
 
 #include "itkLabelMap.h"
 #include "itkShapeLabelObject.h"

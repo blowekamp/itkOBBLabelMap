@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBoundingBoxImageLabelMapFilter_hxx
-#define __itkBoundingBoxImageLabelMapFilter_hxx
+#ifndef itkBoundingBoxImageLabelMapFilter_hxx
+#define itkBoundingBoxImageLabelMapFilter_hxx
 
 #include "itkBoundingBoxImageLabelMapFilter.h"
 #include "itkRegionOfInterestImageFilter.h"

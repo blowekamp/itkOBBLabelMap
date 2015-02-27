@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelShapeStatisticsImageFilter_h
-#define __itkLabelShapeStatisticsImageFilter_h
+#ifndef itkLabelShapeStatisticsImageFilter_h
+#define itkLabelShapeStatisticsImageFilter_h
 
 #include "itkImageToImageFilter.h"
 #include "itkShapeLabelObject.h"

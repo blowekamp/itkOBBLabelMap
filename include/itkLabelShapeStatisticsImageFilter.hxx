@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkLabelShapeStatisticsImageFilter_hxx
-#define __itkLabelShapeStatisticsImageFilter_hxx
+#ifndef itkLabelShapeStatisticsImageFilter_hxx
+#define itkLabelShapeStatisticsImageFilter_hxx
 
 #include "itkLabelShapeStatisticsImageFilter.h"
 #include "itkLabelImageToLabelMapFilter.h"
@@ -86,7 +86,7 @@ LabelShapeStatisticsImageFilter<TInputImage, TLabelImage>
 ::GenerateData()
 {
 
-  const TInputImage* inputImage( this->GetInput() );
+  //const TInputImage* inputImage( this->GetInput() );
   const TLabelImage* labelImage( this->GetLabelImage() );
 
   // Create a process accumulator for tracking the progress of minipipeline
