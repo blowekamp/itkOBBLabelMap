@@ -31,7 +31,7 @@ namespace itk
 
 template< class TImage,
           class TSuperclass = ShapeLabelMapFilter<TImage> >
-class ITK_EXPORT OrientedBoundingBoxLabelMapFilter:
+class OrientedBoundingBoxLabelMapFilter:
   public TSuperclass
 {
 public:

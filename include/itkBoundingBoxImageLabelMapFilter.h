@@ -34,7 +34,7 @@ template< class TImage, class TLabelImage > class ShapeLabelMapFilter;
 template< class TImage,
           class TFeatureImage = typename TImage::LabelObjectType::AttributeImageType,
           class TSuperclass = ShapeLabelMapFilter<TImage> >
-class ITK_EXPORT BoundingBoxImageLabelMapFilter:
+class BoundingBoxImageLabelMapFilter:
   public TSuperclass
 {
 public:

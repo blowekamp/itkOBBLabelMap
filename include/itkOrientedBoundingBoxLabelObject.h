@@ -34,7 +34,7 @@ namespace itk
  */
 template < class TLabel, unsigned int VImageDimension,
            class TSuperclass = ShapeLabelObject<TLabel, VImageDimension> >
-class ITK_EXPORT OrientedBoundingBoxLabelObject : public TSuperclass
+class OrientedBoundingBoxLabelObject : public TSuperclass
 {
 private:
 

@@ -34,7 +34,7 @@ namespace itk
 template< class TImage,
           class TFeatureImage = typename TImage::LabelObjectType::AttributeImageType,
           class TSuperclass =  OrientedBoundingBoxLabelMapFilter<TImage> >
-class ITK_EXPORT OrientedBoundingBoxImageLabelMapFilter:
+class OrientedBoundingBoxImageLabelMapFilter:
   public TSuperclass
 {
 public:

@@ -37,7 +37,7 @@ template < class TLabel,
            unsigned int VImageDimension,
            class TAttributeImage = Image<TLabel, VImageDimension>,
            class TSuperclass = ShapeLabelObject<TLabel, VImageDimension> >
-class ITK_EXPORT AttributeImageLabelObject : public TSuperclass
+class AttributeImageLabelObject : public TSuperclass
 {
 public:
   /** Standard class typedefs */
