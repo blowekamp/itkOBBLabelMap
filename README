@@ -1,12 +1,21 @@
+This ITK module provides the capabilities to efficiently compute
+oriented bounding around a labels in a label image and extract images
+for the bounding boxes.
+
+Additionally, this module provide a LabelShapeStatistics filter which
+proved an interface simular the the ITK's LabelStatistics filter, but
+for shape attributes. This is Simular to the LabepGeometry filter
+currently in ITK review, but is internally based on the LabelMap
+framework for more efficient computation and support for spacing and
+image orientation.
+
+
 General
 ------
 
 This is a module for ITK: The Insight Toolkit for Segmentation and
 Registration. It is designed to work with the ITKv4 modular system and
 to be places it ITK/Modules/External.
-
-This modular is empty it is just a template to be used as a starting
-point for a module with acutal content.
 
 Getting Started
 ---------------
