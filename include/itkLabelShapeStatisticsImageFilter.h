@@ -26,6 +26,7 @@ namespace itk
 {
 /** \class LabelShapeStatisticsImageFilter
  *
+ * \ingroup ITKOBBLabelMap
  */
 template< typename TInputImage, typename TLabelImage >
 class LabelShapeStatisticsImageFilter:
