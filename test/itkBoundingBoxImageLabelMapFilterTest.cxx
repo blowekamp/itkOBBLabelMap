@@ -47,7 +47,7 @@ int itkBoundingBoxImageLabelMapFilterTest( int argc, char **argv )
   itk::SizeValueType label = atoi(argv[4]);
 
   const unsigned int ImageDimension = 3;
-  typedef unsigned int LabelPixelType;
+  typedef unsigned int                               LabelPixelType;
   typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
 
   typedef itk::Image<float, ImageDimension> ImageType;

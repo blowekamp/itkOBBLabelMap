@@ -40,9 +40,9 @@ class OrientedBoundingBoxImageLabelMapFilter:
 public:
   /** Standard class typedefs. */
   typedef OrientedBoundingBoxImageLabelMapFilter Self;
-  typedef TSuperclass                       Superclass;
-  typedef SmartPointer< Self >              Pointer;
-  typedef SmartPointer< const Self >        ConstPointer;
+  typedef TSuperclass                            Superclass;
+  typedef SmartPointer< Self >                   Pointer;
+  typedef SmartPointer< const Self >             ConstPointer;
 
   /** Some convenient typedefs. */
   typedef TImage                               ImageType;
@@ -55,9 +55,9 @@ public:
 
   typedef typename ImageType::SpacingType      SpacingType;
 
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                                FeatureImageType;
   typedef typename LabelObjectType::AttributeImageType AttributeImageType;
-  typedef typename AttributeImageType::PixelType AttributeImagePixelType;
+  typedef typename AttributeImageType::PixelType       AttributeImagePixelType;
 
   /** Interpolator typedef. */
   typedef InterpolateImageFunction< FeatureImageType, double >     InterpolatorType;

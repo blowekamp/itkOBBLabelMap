@@ -72,8 +72,6 @@ public:
     return m_AttributeImage.GetPointer();
   }
 
-
-
   virtual void CopyAttributesFrom( const LabelObjectType * lo ) ITK_OVERRIDE
     {
     Superclass::CopyAttributesFrom( lo );

@@ -39,7 +39,7 @@ class BoundingBoxImageLabelMapFilter:
 {
 public:
   /** Standard class typedefs. */
-  typedef BoundingBoxImageLabelMapFilter Self;
+  typedef BoundingBoxImageLabelMapFilter    Self;
   typedef TSuperclass                       Superclass;
   typedef SmartPointer< Self >              Pointer;
   typedef SmartPointer< const Self >        ConstPointer;
@@ -54,7 +54,7 @@ public:
   typedef typename ImageType::SizeType         SizeType;
   typedef typename ImageType::LabelObjectType  LabelObjectType;
 
-  typedef TFeatureImage FeatureImageType;
+  typedef TFeatureImage                                FeatureImageType;
   typedef typename LabelObjectType::AttributeImageType AttributeImageType;
 
   /** ImageDimension constants */

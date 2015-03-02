@@ -35,7 +35,8 @@ int itkOrientedBoundingBoxLabelMapFilterTest1( int , char ** )
 
   // check some template parameters for the super-class
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > LabelObjectType;
-  typedef itk::LabelMap<LabelObjectType> LabelMapType;
+
+  typedef itk::LabelMap<LabelObjectType>                       LabelMapType;
   typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType> LabelMapFilter;
 
   LabelObjectType::Pointer labelObject = LabelObjectType::New();

@@ -48,14 +48,15 @@ int itkOrientedBoundingBoxImageLabelMapFilterTest2( int argc, char **argv )
   itk::SizeValueType label = atoi(argv[4]);
 
   const unsigned int ImageDimension = 3;
-  typedef unsigned int LabelPixelType;
+  typedef unsigned int                               LabelPixelType;
   typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
 
   typedef itk::Image<float, ImageDimension> ImageType;
 
-  typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > OBBLabelObjectType;
+  typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension >                           OBBLabelObjectType;
   typedef itk::AttributeImageLabelObject< LabelPixelType, ImageDimension, ImageType, OBBLabelObjectType > LabelObjectType;
-  typedef itk::LabelMap<LabelObjectType> LabelMapType;
+
+  typedef itk::LabelMap<LabelObjectType>                                LabelMapType;
   typedef itk::LabelImageToLabelMapFilter<LabelImageType, LabelMapType> ToLabelMapFilterType;
   ToLabelMapFilterType::Pointer toLabelMap = ToLabelMapFilterType::New();
 

@@ -36,21 +36,6 @@ template < class TLabel, unsigned int VImageDimension,
            class TSuperclass = ShapeLabelObject<TLabel, VImageDimension> >
 class OrientedBoundingBoxLabelObject : public TSuperclass
 {
-private:
-
-  template <size_t X, unsigned short Y>
-    struct IntegerPow
-  {
-    static const size_t Result = X*IntegerPow<X, Y-1>::Result;
-  };
-
-  template <size_t X>
-    struct IntegerPow<X,0>
-  {
-    static const size_t Result = 1;
-  };
-
-
 public:
   /** Standard class typedefs */
   typedef OrientedBoundingBoxLabelObject         Self;
@@ -72,6 +57,23 @@ public:
   typedef typename LabelMapType::DirectionType OBBDirectionType;
   typedef typename LabelMapType::PointType     OBBPointType;
   typedef Vector<double,ImageDimension >       OBBSizeType;
+
+
+private:
+
+  template <size_t VX, unsigned short VY>
+    struct IntegerPow
+  {
+    static const size_t Result = VX*IntegerPow<VX, VY-1>::Result;
+  };
+
+  template <size_t VX>
+    struct IntegerPow<VX,0>
+  {
+    static const size_t Result = 1;
+  };
+
+public:
 
   typedef FixedArray<OBBPointType, IntegerPow<2,ImageDimension>::Result > OBBVerticesType;
 
@@ -156,6 +158,7 @@ protected:
     os << indent << "OBBDirection: " << m_OBBDirection; // prints eol
     os << indent << "OBBSize: " << m_OBBSize << std::endl;
     }
+
 
 private:
   OrientedBoundingBoxLabelObject(const Self&); //purposely not implemented

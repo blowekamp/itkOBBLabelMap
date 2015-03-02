@@ -60,7 +60,7 @@ OrientedBoundingBoxLabelMapFilter< TImage, TLabelImage >
       }
 
     // add end index of line as physical point relative to centroid
-    idx[0] +=  line.GetLength()-1;
+    idx[0] += line.GetLength() - 1;
     output->TransformIndexToPhysicalPoint(idx, pt);
     for(unsigned int j = 0; j < ImageDimension; ++j)
       {

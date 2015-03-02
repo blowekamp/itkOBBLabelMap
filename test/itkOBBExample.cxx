@@ -41,7 +41,7 @@ int itkOBBExampleImp( const std::string &imageFileName,
                       const std::string &labelImageFileName)
 {
   const unsigned int ImageDimension = TFeatureImageType::ImageDimension;
-  typedef unsigned long LabelPixelType;
+  typedef unsigned long                              LabelPixelType;
   typedef itk::Image<LabelPixelType, ImageDimension> LabelImageType;
 
   typedef TFeatureImageType ImageType;
