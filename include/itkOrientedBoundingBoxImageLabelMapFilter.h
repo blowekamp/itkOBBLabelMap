@@ -113,7 +113,7 @@ public:
   // the geometry of the spacing image, not all of them. So if another
   // filter has this as a requirement it may be wrong... but such a
   // filter does not exit yet.
-  virtual void VerifyInputInformation() {} ITK_OVERRIDE
+  virtual void VerifyInputInformation() ITK_OVERRIDE {}
 
 protected:
   OrientedBoundingBoxImageLabelMapFilter();
