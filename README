@@ -20,27 +20,9 @@ to be places it ITK/Modules/External.
 Getting Started
 ---------------
 
-The official ITKv4 Wiki documentation on adding an external module is here:
-http://www.itk.org/Wiki/ITK_Release_4/Modularization/Add_an_external_module_(external_module)
+This module should be cloned into the ITK reposiory as a subdirectory in the "Modules/External" directory.
 
-The following is a breif list of instructions to get a external module
-started in a repository:
-
-mkdir ITK/Modules/External/itkMyModule
-cd ITK/Modules/External/itkMyModule
-git init
-git fetch git@github.com:blowekamp/itkExternalTemplate.git
-git merge FETCH_HEAD
-
-The CMakeLists.txt and itk-modules need to be modified with the name
-of the module, something along the following:
-
-sed 's/ExternalTemplate/MyModule/g' CMakeLists.txt itk-module.cmake
-
-There is the inplace option to sed, but it's not portable, so do this
-change by hand or look up the option in sed.
-
-Then hack away at you code in include, src, and tests.
+Then when cmake is run the ITK build the name of this module will appears, and it needs to be enabled.
 
 License
 -------
