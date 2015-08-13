@@ -4,7 +4,7 @@ for the bounding boxes.
 
 Additionally, this module provide a LabelShapeStatistics filter which
 proved an interface simular the the ITK's LabelStatistics filter, but
-for shape attributes. This is Simular to the LabepGeometry filter
+for shape attributes. This is Simular to the LabelGeometry filter
 currently in ITK review, but is internally based on the LabelMap
 framework for more efficient computation and support for spacing and
 image orientation.
@@ -15,14 +15,23 @@ General
 
 This is a module for ITK: The Insight Toolkit for Segmentation and
 Registration. It is designed to work with the ITKv4 modular system and
-to be places it ITK/Modules/External.
+to be placed in ITK/Modules/External.
+
 
 Getting Started
 ---------------
 
 This module should be cloned into the ITK reposiory as a subdirectory in the "Modules/External" directory.
 
-Then when cmake is run the ITK build the name of this module will appears, and it needs to be enabled.
+The following is a brief list of instructions to get a external module into ITK:
+
+cd ITK/Modules/External/
+git clone https://github.com/blowekamp/itkOBBLabelMap.git
+
+Then configure ITK as not make but set "Module_OBBLabelMap" to "ON" to
+enable this module. The external module will need to be manually
+updated from the git respository.
+
 
 License
 -------
