@@ -39,16 +39,16 @@ int itkOrientedBoundingBoxImageLabelMapFilterTest1( int , char ** )
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > OBBLabelObjectType;
   typedef itk::AttributeImageLabelObject< LabelPixelType, ImageDimension, ImageType, OBBLabelObjectType > LabelObjectType;
   typedef itk::LabelMap<LabelObjectType> LabelMapType;
-  typedef itk::OrientedBoundingBoxImageLabelMapFilter<LabelMapType> LabelMapFilter;
+  typedef itk::OrientedBoundingBoxImageLabelMapFilter<LabelMapType> LabelMapFilterType;
 
   LabelObjectType::Pointer labelObject = LabelObjectType::New();
   LabelMapType::Pointer  labelMap =  LabelMapType::New();
 
-  LabelMapFilter::Pointer labelMapFilter =  LabelMapFilter::New();
+  LabelMapFilterType::Pointer labelMapFilter =  LabelMapFilterType::New();
 
-  EXERCISE_BASIC_OBJECT_METHODS( labelMapFilter, LabelMapFilter );
+  EXERCISE_BASIC_OBJECT_METHODS( labelMapFilter, LabelMapFilterType );
 
-  LabelMapFilter::SpacingType offset;
+  LabelMapFilterType::SpacingType offset;
   offset.Fill(2);
 
   labelMapFilter->SetPaddingOffset( 2.0 );
@@ -60,7 +60,7 @@ int itkOrientedBoundingBoxImageLabelMapFilterTest1( int , char ** )
   labelMapFilter->SetPaddingOffset( offset );
 
 
-  LabelMapFilter::SpacingType spacing;
+  LabelMapFilterType::SpacingType spacing;
   spacing.Fill(2);
 
   labelMapFilter->SetAttributeImageSpacing( spacing );

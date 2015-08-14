@@ -37,14 +37,14 @@ int itkOrientedBoundingBoxLabelMapFilterTest1( int , char ** )
   typedef itk::OrientedBoundingBoxLabelObject< LabelPixelType, ImageDimension > LabelObjectType;
 
   typedef itk::LabelMap<LabelObjectType>                       LabelMapType;
-  typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType> LabelMapFilter;
+  typedef itk::OrientedBoundingBoxLabelMapFilter<LabelMapType> LabelMapFilterType;
 
   LabelObjectType::Pointer labelObject = LabelObjectType::New();
   LabelMapType::Pointer  labelMap =  LabelMapType::New();
 
-  LabelMapFilter::Pointer labelMapFilter =  LabelMapFilter::New();
+  LabelMapFilterType::Pointer labelMapFilter =  LabelMapFilterType::New();
 
-  EXERCISE_BASIC_OBJECT_METHODS( labelMapFilter, LabelMapFilter );
+  EXERCISE_BASIC_OBJECT_METHODS( labelMapFilter, LabelMapFilterType );
 
   return EXIT_SUCCESS;
 }
