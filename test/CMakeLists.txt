@@ -14,6 +14,7 @@ set(ITK${itk-module}Tests
   itkOrientedBoundingBoxLabelObjectTest.cxx
   itkOrientedBoundingBoxLabelMapFilterTest1.cxx
   itkOrientedBoundingBoxLabelMapFilterTest2.cxx
+  itkGLCMLabelObjectTest.cxx
 )
 
 
@@ -55,3 +56,8 @@ itk_add_test(NAME itkOBBExample1
   WORKING_DIRECTORY ${ITK_TEST_OUTPUT_DIR}
   COMMAND ${itk-module}TestDriver itkOBBExample
   ${ITK${itk-module}_DATA_ROOT}/jelly_beans.png ${ITK${itk-module}_DATA_ROOT}/jelly_beans_seg.png)
+
+
+
+itk_add_test(NAME itkGLCMLabelObjectTest
+  COMMAND ${itk-module}TestDriver itkGLCMLabelObjectTest )
