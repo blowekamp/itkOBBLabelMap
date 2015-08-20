@@ -16,6 +16,7 @@ set(ITK${itk-module}Tests
   itkOrientedBoundingBoxLabelMapFilterTest2.cxx
   itkGLCMLabelObjectTest.cxx
   itkGLCMLabelMapFilterTest.cxx
+  itkGLCMLabelMapFilterTest2.cxx
 )
 
 
