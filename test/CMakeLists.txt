@@ -68,3 +68,8 @@ itk_add_test(NAME itkGLCMLabelMapFilterTest
   WORKING_DIRECTORY ${ITK_TEST_OUTPUT_DIR}
   COMMAND ${itk-module}TestDriver itkGLCMLabelMapFilterTest
   ${ITK${itk-module}_DATA_ROOT}/jelly_beans.png ${ITK${itk-module}_DATA_ROOT}/jelly_beans_seg.png)
+
+
+itk_add_test(NAME itkGLCMLabelMapFilterTest2
+  WORKING_DIRECTORY ${ITK_TEST_OUTPUT_DIR}
+  COMMAND ${itk-module}TestDriver itkGLCMLabelMapFilterTest2)
