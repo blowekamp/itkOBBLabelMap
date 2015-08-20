@@ -174,7 +174,7 @@ GLCMLabelMapFilter< TImage, TFeatureImage, TSuperclass >
 
     if ( !bb.IsInside(idx) )
       {
-      break;
+      continue;
       }
 
     if ( idx[0] + (IndexValueType)length > bb.GetUpperIndex()[0] )
